@@ -35,6 +35,22 @@ Expected output: `True`
 
 If your prompt is `>>>`, you are inside Python REPL, not PowerShell. Exit REPL first (`exit()` or `Ctrl+Z`, then Enter).
 
+## 2.1) One-click scripts (detailed progress logs)
+
+From repo root, local end-to-end dry-run with step-by-step logs:
+
+```powershell
+./compare/open-r1/scripts/run_all_local_dryrun.ps1
+```
+
+On H100 Linux server (real training, not dry-run):
+
+```bash
+cd compare/open-r1
+chmod +x ./scripts/run_all_h100_full.sh
+./scripts/run_all_h100_full.sh
+```
+
 `.\compare\open-r1\.venv\Scripts\python.exe`
 
 ## 3) Plan first (recommended)
