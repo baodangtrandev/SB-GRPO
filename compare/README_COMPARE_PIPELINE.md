@@ -5,7 +5,7 @@ This folder now has a single entrypoint to orchestrate multi-repo train/eval/met
 ## Files
 
 - `run_compare_pipeline.py`: orchestrates stages (`plan`, `validate-datasets`, `train`, `eval`, `collect`, `chart`, `all`)
-- `pipeline.compare.yaml`: run registry for `open-r1`, `NGRPO`, `DIVA-GRPO`, `DeepSeek-Math`
+- `pipeline.compare.yaml`: run registry for `open-r1` (`vanilla`, `mgrpo`, `seed`, `amsb`), `NGRPO`, `DIVA-GRPO`, `DeepSeek-Math`
 - `datasets.compare.manifest.yaml`: canonical dataset contract
 - `datasets.compare.lock.json`: optional row/hash lock metadata
 
@@ -47,6 +47,18 @@ Render charts from normalized metrics:
 python run_compare_pipeline.py --stage chart --metric pass@1
 ```
 
+Run only A-MSB-GRPO in compare-level orchestrator:
+
+```powershell
+python run_compare_pipeline.py --stage all --runs openr1_amsb
+```
+
+Run A-MSB-GRPO directly from `open-r1` with one wrapper:
+
+```powershell
+./open-r1/scripts/run_amsb_local_pipeline.ps1 -OfflineOnly
+```
+
 ## Enabling More Runs
 
 `pipeline.compare.yaml` keeps `NGRPO` and `DIVA-GRPO` entries as templates (`enabled: false`) because those scripts require environment/path customization.
@@ -70,4 +82,5 @@ By default artifacts are written to:
 
 - Dataset validation supports parquet column checks when `pyarrow` is available.
 - Chart rendering requires `matplotlib`.
+- `metric_collectors` supports `optional: true` for non-blocking artifacts.
 - For strict CI behavior, add `--strict`.

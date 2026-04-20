@@ -3,6 +3,8 @@ __pycache__/
 *.py[codz]
 *$py.class
 
+# ignore data folder
+
 # docs
 docs/*.md
 docs/papers-txt/

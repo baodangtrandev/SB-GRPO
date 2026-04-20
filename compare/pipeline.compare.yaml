@@ -42,6 +42,19 @@ runs:
       - kind: openr1_benchmark_summary
         path: data/benchmark-dryrun-seed/summary.json
 
+  - id: openr1_amsb
+    enabled: true
+    repo: open-r1
+    method: amsb
+    train_command: pwsh -NoProfile -File scripts/run_local_dryrun.ps1 -RecipeConfig recipes/Qwen2.5-Math-7B/grpo/config_amsb_local_dryrun.yaml
+    eval_command: python scripts/run_benchmark_dryrun.py --datasets math500,gsm8k,aime2025,olympiadbench --num-questions 16 --num-generations 8 --offline-only --method amsb --output-dir data/benchmark-dryrun-amsb
+    metric_collectors:
+      - kind: openr1_dryrun_summary
+        path: data/Qwen2.5-Math-7B-Open-R1-AMSB-DryRun/dry_run_summary.json
+        optional: true
+      - kind: openr1_benchmark_summary
+        path: data/benchmark-dryrun-amsb/summary.json
+
   - id: ngrpo_template
     enabled: false
     repo: NGRPO

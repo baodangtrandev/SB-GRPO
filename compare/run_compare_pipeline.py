@@ -385,21 +385,24 @@ def collect_metrics(
             if not isinstance(collector_cfg, dict):
                 continue
             kind = str(collector_cfg.get("kind", "")).strip()
+            optional_collector = bool(collector_cfg.get("optional", False))
             if not kind:
                 continue
 
             files = _collector_files(repo_dir, collector_cfg)
             if not files:
-                warnings.append(
-                    f"Collector '{kind}' in run '{run_cfg.get('id')}' matched no files"
-                )
+                if not optional_collector:
+                    warnings.append(
+                        f"Collector '{kind}' in run '{run_cfg.get('id')}' matched no files"
+                    )
                 continue
 
             for file_path in files:
                 if not file_path.exists():
-                    warnings.append(
-                        f"Collector '{kind}' in run '{run_cfg.get('id')}' missing file: {file_path}"
-                    )
+                    if not optional_collector:
+                        warnings.append(
+                            f"Collector '{kind}' in run '{run_cfg.get('id')}' missing file: {file_path}"
+                        )
                     continue
 
                 try:
@@ -436,9 +439,10 @@ def collect_metrics(
                             f"Unsupported collector kind '{kind}' in run '{run_cfg.get('id')}'"
                         )
                 except Exception as exc:
-                    warnings.append(
-                        f"Collector '{kind}' in run '{run_cfg.get('id')}' failed on '{file_path}': {exc}"
-                    )
+                    if not optional_collector:
+                        warnings.append(
+                            f"Collector '{kind}' in run '{run_cfg.get('id')}' failed on '{file_path}': {exc}"
+                        )
 
     if strict and warnings:
         for warning in warnings:
