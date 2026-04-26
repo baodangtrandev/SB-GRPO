@@ -683,9 +683,9 @@ class AMSBGRPOTrainer:
         reflection_prompts = []
         for sample in layer1_samples:
             reflection_prompt = (
-                f"Bài toán gốc: {sample.prompt}\n\n"
-                f"Lời giải trước đó:\n{sample.response}\n\n"
-                f"Hãy kiểm tra lại lời giải trên và đưa ra đáp án cuối cùng."
+                f"Original problem: {sample.prompt}\n\n"
+                f"Previous solution:\n{sample.response}\n\n"
+                f"Critically review the above solution and provide the final correct answer."
             )
             reflection_prompts.append(reflection_prompt)
 
