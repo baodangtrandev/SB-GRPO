@@ -36,9 +36,9 @@ DEFAULT_M: int = 4                     # Số nhánh self-reflection per rollout
 
 # System prompt trung lập cho Layer 2 Self-Reflection
 SELF_REFLECTION_SYSTEM_PROMPT: str = (
-    "Hãy kiểm tra lại tính logic của các bước giải. "
-    "Giữ nguyên nếu phát hiện đáp án đã chính xác, "
-    "hiệu chỉnh lại nếu phát hiện lỗi sai."
+    "Critically review the logical steps of the provided solution. "
+    "If the reasoning is entirely correct, keep the answer unchanged. "
+    "If you detect any logical flaws or errors, correct them and provide the updated solution."
 )
 
 
