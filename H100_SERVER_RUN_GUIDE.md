@@ -57,12 +57,12 @@ source compare/open-r1/.venv/bin/activate
 
 Chạy orchestrator để tổng hợp số liệu:
 ```bash
-python compare/run_compare_pipeline.py --config compare/pipeline.compare.yaml --stage collect
+python compare/run_compare_pipeline.py --config compare/pipeline.h100.compare.yaml --stage collect
 ```
 
 Vẽ biểu đồ so sánh:
 ```bash
-python compare/run_compare_pipeline.py --config compare/pipeline.compare.yaml --stage chart --metric pass@1
+python compare/run_compare_pipeline.py --config compare/pipeline.h100.compare.yaml --stage chart --metric pass@1
 ```
 
 **Kết quả thu được:**

@@ -53,6 +53,7 @@ Mọi pipeline đều được ép chạy chung một bộ cấu hình nghiêm n
   - Tích hợp **vLLM** làm generation engine (Cấp phát 30% VRAM GPU).
   - Tích hợp DeepSpeed ZeRO-3 và Flash Attention 2.
 - **Siêu tham số (Fair Comparison):** 
+  - Epochs: 1
   - Learning Rate: 1.0e-05.
   - Prompt Length = 2048, Completion = 1024.
   - Generative Rollouts: 8 câu trả lời/prompt.
@@ -72,8 +73,8 @@ cd compare/open-r1
 **Tổng hợp và Visualize Kết quả:**
 ```bash
 # Tổng hợp các bảng summary
-python compare/run_compare_pipeline.py --config compare/pipeline.compare.yaml --stage collect
+python compare/run_compare_pipeline.py --config compare/pipeline.h100.compare.yaml --stage collect
 
 # Trích xuất biểu đồ tự động
-python compare/run_compare_pipeline.py --config compare/pipeline.compare.yaml --stage chart --metric pass@1
+python compare/run_compare_pipeline.py --config compare/pipeline.h100.compare.yaml --stage chart --metric pass@1
 ```
