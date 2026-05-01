@@ -2,6 +2,7 @@
 __pycache__/
 *.py[codz]
 *$py.class
+M-SB-GRPO_Server_Ready.zip
 
 # ignore data folder
 
