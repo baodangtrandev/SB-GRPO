@@ -19,23 +19,25 @@
 
 \pdfinfo{
 /Title (H-MSB-GRPO: Heuristic Multi-Layer Semantic-Balanced GRPO for Enhanced LLM Reasoning)
-/Author (Minh Nguyen Quoc, Bang Nguyen Dinh, Bao Tran Dang)
+/Author (Bang Dinh Nguyen, Bao Dang Tran, Minh Quoc Nguyen)
 }
 
 \title{H-MSB-GRPO: Heuristic Multi-Layer Semantic-Balanced GRPO \\ for Enhanced LLM Reasoning}
-\author{Minh Nguyen Quoc\textsuperscript{1}, Bang Nguyen Dinh\textsuperscript{1}, Bao Tran Dang\textsuperscript{1}\\
+\author{Bang Dinh Nguyen\textsuperscript{1}*, Bao Dang Tran\textsuperscript{1}*, Minh Quoc Nguyen\textsuperscript{1}\dag\\
 \textsuperscript{1}Ho Chi Minh City University of Technology (HCMUT)\\
 District 10, Ho Chi Minh City, Vietnam\\
-\{minhnguyen, bang.nguyendinh, bao.trandang\}@hcmut.edu.vn
+\{bang.nguyendinh, bao.trandang, minhnguyen\}@hcmut.edu.vn
 }
 
 \begin{document}
 \maketitle
 
+\def\thefootnote{*}\footnotetext{Equal contribution}
+\def\thefootnote{\dag}\footnotetext{Corresponding author}
+\def\thefootnote{\arabic{footnote}}
+
 \begin{abstract}
-\begin{quote}
 Reinforcement Learning (RL), specifically Group Relative Policy Optimization (GRPO), has emerged as a transformative technique for unlocking deep reasoning in Large Language Models (LLMs). By incentivizing multi-step Chain-of-Thought (CoT) behaviors, GRPO allows models to transcend simple pattern matching. However, current implementations are plagued by critical bottlenecks: advantage vanishing in uniform groups, systematic correction bias during reflection, and inefficient utilization of noisy, high-entropy error samples. We propose \textbf{H-MSB-GRPO} (Heuristic Multi-Layer Semantic-Balanced GRPO), an advanced framework that integrates dynamic multi-layer reflection with semantic error profiling. Our architecture introduces a differentiable \textbf{Heuristic Confidence Gate} that smoothly transitions between standard and negative-enhanced advantage calculation, preventing gradient stalls. We further employ K-Means clustering on reasoning embeddings to identify systematic logical failure modes and construct \textbf{Static Balanced Batches} to stabilize policy gradients. Finally, we derive an information-theoretic loss scaling factor based on the \textbf{Shannon Entropy} of semantic clusters to prioritize fixing systematic errors over random noise. Experimental evaluation on GSM8K and MATH benchmarks shows that H-MSB-GRPO reaches a highly competitive accuracy of \textbf{68.78\%} on the MATH dataset using a 7B model, outperforming vanilla GRPO by \textbf{26.57\%} and its multi-layer predecessors by \textbf{2.46\%}.
-\end{quote}
 \end{abstract}
 
 \section{Introduction}
@@ -127,44 +129,48 @@ To maximize GPU throughput on NVIDIA H100 and prevent memory fragmentation cause
 \section{Experimental Results}
 
 \subsection{Training Configuration}
-We use \textbf{Qwen2.5-7B-Instruct} as the backbone. Training uses \textbf{8x NVIDIA H100} GPUs. We implement a sequential handoff between \textbf{vLLM} (generation) and \textbf{PyTorch/DeepSpeed} (training) to manage the 80GB VRAM constraint. We use \textbf{4-bit QLoRA} with a rank $r=16$.
+We use \textbf{Qwen2.5-7B-Instruct} as the backbone. Training is performed on a single \textbf{1x NVIDIA H100 80GB} GPU. To fit the entire RL pipeline within the 80GB VRAM constraint, we implement a sequential handoff between \textbf{vLLM} (generation) and \textbf{PyTorch/DeepSpeed} (training). We use \textbf{4-bit QLoRA} with a rank $r=16$ to further optimize memory utilization.
 
 \subsection{Performance Evaluation}
 All models were evaluated using the \texttt{lighteval} framework on the exact same hardware configuration to ensure fairness. Table \ref{tab:main} compares H-MSB-GRPO with vanilla GRPO (which lacks reflection entirely) and M-GRPO (which utilizes reflection but samples revisions uniformly without semantic clustering).
 
-\begin{table}[h]
+\begin{table}[ht]
 \centering
 \caption{Pass@1 Accuracy (\%) on Reasoning Benchmarks.}
 \label{tab:main}
+\resizebox{\columnwidth}{!}{
 \begin{tabular}{lccc}
 \toprule
 Dataset & Vanilla GRPO & M-GRPO & \textbf{H-MSB-GRPO} \\
 \midrule
-GSM8K   & 56.33 & \textbf{70.50} & 69.22 \\
+GSM8K   & 56.33 & \textbf{70.51} & 69.22 \\
 MATH    & 42.21 & 66.32 & \textbf{68.78} \\
 \bottomrule
 \end{tabular}
+}
 \end{table}
 
-\begin{table}[h]
+\begin{table}[ht]
 \centering
-\caption{MATH Sub-category Analysis: M-GRPO vs H-MSB-GRPO.}
+\caption{MATH Sub-category Analysis: Comparison of Vanilla GRPO, M-GRPO, and H-MSB-GRPO.}
 \label{tab:math}
-\begin{tabular}{l|cc}
+\resizebox{\columnwidth}{!}{
+\begin{tabular}{lccc}
 \toprule
-Category & M-GRPO (\%) & \textbf{A-MSB (\%)} \\
+Category & Vanilla (\%) & M-GRPO (\%) & \textbf{H-MSB (\%)} \\
 \midrule
-Algebra                     & \textbf{89.38} & 89.13 \\
-Counting \& Probability     & 64.55 & \textbf{67.09} \\
-Geometry                    & 56.99 & \textbf{57.62} \\
-Intermediate Algebra        & 49.83 & \textbf{54.71} \\
-Number Theory               & 70.55 & \textbf{73.52} \\
-Prealgebra                  & 81.63 & \textbf{82.43} \\
-Precalculus                 & 51.28 & \textbf{56.96} \\
+Algebra                     & 62.01 & \textbf{89.39} & 89.13 \\
+Counting \& Probability     & 43.25 & 64.56 & \textbf{67.09} \\
+Geometry                    & 32.99 & 56.99 & \textbf{57.62} \\
+Intermediate Algebra        & 25.14 & 49.83 & \textbf{54.71} \\
+Number Theory               & 42.22 & 70.56 & \textbf{73.52} \\
+Prealgebra                  & 65.33 & 81.63 & \textbf{82.43} \\
+Precalculus                 & 24.54 & 51.28 & \textbf{56.96} \\
 \midrule
-\textbf{Overall}            & 66.32 & \textbf{68.78} \\
+\textbf{Overall}            & 42.21 & 66.32 & \textbf{68.78} \\
 \bottomrule
 \end{tabular}
+}
 \end{table}
 
 \subsection{Analysis and Case Study}
@@ -182,7 +188,7 @@ Because our method builds upon fundamental RL and reflection techniques, our pri
 This progressive breakdown confirms that while multi-step reflection establishes the basic capacity for reasoning, our dynamic routing and semantic-aware target selection are strictly required to resolve systemic logical bottlenecks efficiently.
 
 \section{Discussion and Limitations}
-An intriguing observation from our results is the slight underperformance of H-MSB-GRPO on the GSM8K dataset (69.22\%) compared to M-GRPO (70.50\%). GSM8K consists primarily of simpler arithmetic problems with short reasoning paths. Errors here generally manifest as stochastic calculation slips (arithmetic noise) rather than systemic logical flaws. Consequently, the Semantic Entropy ($H$) for GSM8K errors is uniformly high, causing our Loss Scaling factor ($\lambda$) to excessively dampen gradients. While M-GRPO aggressively updates on these noisy samples to gain a marginal lead on GSM8K, H-MSB-GRPO preserves its representation bounds, leading to vastly superior generalization on the much harder MATH benchmarks.
+An intriguing observation from our results is the slight underperformance of H-MSB-GRPO on the GSM8K dataset (69.22\%) compared to M-GRPO (70.51\%). GSM8K consists primarily of simpler arithmetic problems with short reasoning paths. Errors here generally manifest as stochastic calculation slips (arithmetic noise) rather than systemic logical flaws. Consequently, the Semantic Entropy ($H$) for GSM8K errors is uniformly high, causing our Loss Scaling factor ($\lambda$) to excessively dampen gradients. While M-GRPO aggressively updates on these noisy samples to gain a marginal lead on GSM8K, H-MSB-GRPO preserves its representation bounds, leading to vastly superior generalization on the much harder MATH benchmarks.
 
 Additionally, while H-MSB-GRPO is effective, it relies on a frozen embedding model for clustering. If the embedding model fails to capture the nuance of a specific mathematical reasoning step, the SEP module's efficiency degrades. Future work will investigate \textbf{online-learned embeddings} where the vectorizer is co-trained with the policy to better understand domain-specific logical patterns.
 
