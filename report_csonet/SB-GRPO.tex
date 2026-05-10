@@ -51,6 +51,13 @@ Measuring model uncertainty through Semantic Entropy (SE) \cite{kuhn2023semantic
 
 \section{Methodology}
 
+\begin{figure*}[ht]
+    \centering
+    \includegraphics[width=\textwidth]{sb-grpo-diagram.png}
+    \caption{The complete system architecture of SB-GRPO. The Heuristic Confidence Gate ($\Gamma$) dynamically routes uniform batches to the NGRPO module (Path A) to prevent advantage vanishing. For mixed batches (Path B), the framework applies Multi-Layer Reflection and Semantic Error Profiling (SEP) to extract the Top Error Cluster ($C_{top}$), forming a Static Balanced Batch optimized by an Entropy-Aware Loss Scaling factor ($\lambda$).}
+    \label{fig:pipeline}
+\end{figure*}
+
 \subsection{Formal Derivation of SB-GRPO}
 Let $q$ be a prompt and $O = \{o_1, \dots, o_N\}$ be $N$ rollouts from policy $\pi_\theta$. The standard reward for $o_i$ is $r_i \in \{0, 1\}$. In SB-GRPO, we define the accuracy ratio $R = \frac{1}{N} \sum_{i=1}^N r_i$.
 
