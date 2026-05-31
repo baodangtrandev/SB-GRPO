@@ -10,7 +10,6 @@ All models were evaluated using the \texttt{lighteval} framework on the exact sa
 \centering
 \caption{Pass@1 Accuracy (\%) on Advanced Reasoning Benchmarks (1 Sample).}
 \label{tab:main}
-\resizebox{\columnwidth}{!}{
 \begin{tabular}{lccc}
 \toprule
 Dataset & Vanilla GRPO & M-GRPO & \textbf{SB-GRPO} \\
@@ -22,14 +21,12 @@ GPQA Diamond  & 30.30 & 31.82 & \textbf{32.83} \\
 GSM8K         & 56.33 & \textbf{70.51} & 69.22 \\
 \bottomrule
 \end{tabular}
-}
 \end{table}
 
 \begin{table}[ht]
 \centering
 \caption{Pass@1 Accuracy (\%) on Advanced Reasoning Benchmarks (4 Samples).}
 \label{tab:pass4}
-\resizebox{\columnwidth}{!}{
 \begin{tabular}{lccc}
 \toprule
 Dataset & Vanilla GRPO & M-GRPO & \textbf{SB-GRPO} \\
@@ -40,14 +37,12 @@ AIME 2025     & 0.83  & 6.67  & \textbf{8.33}  \\
 GPQA Diamond  & 28.91 & 29.42 & \textbf{33.08} \\
 \bottomrule
 \end{tabular}
-}
 \end{table}
 
 \begin{table}[ht]
 \centering
 \caption{Absolute Performance Gains ($\Delta$) of SB-GRPO over Baselines (based on 4-sample evaluation).}
 \label{tab:delta}
-\resizebox{\columnwidth}{!}{
 \begin{tabular}{lcc}
 \toprule
 Dataset & vs Vanilla GRPO & vs M-GRPO \\
@@ -58,14 +53,12 @@ AIME 2025     & \textbf{+7.50\%}  & \textbf{+1.66\%} \\
 GPQA Diamond  & \textbf{+4.17\%}  & \textbf{+3.66\%} \\
 \bottomrule
 \end{tabular}
-}
 \end{table}
 
 \begin{table}[ht]
 \centering
 \caption{MATH Sub-category Analysis: Comparison of Vanilla GRPO, M-GRPO, and SB-GRPO.}
 \label{tab:math}
-\resizebox{\columnwidth}{!}{
 \begin{tabular}{lccc}
 \toprule
 Category & Vanilla (\%) & M-GRPO (\%) & \textbf{SB (\%)} \\
@@ -81,7 +74,6 @@ Precalculus                 & 24.54 & 51.28 & \textbf{56.96} \\
 \textbf{Overall}            & 42.21 & 66.32 & \textbf{68.78} \\
 \bottomrule
 \end{tabular}
-}
 \end{table}
 
 \begin{figure}[ht]
