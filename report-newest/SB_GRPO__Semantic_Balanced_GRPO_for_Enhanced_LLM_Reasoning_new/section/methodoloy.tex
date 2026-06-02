@@ -65,5 +65,4 @@ H = - \sum_{k=1}^K p_k \log(p_k)
 \end{equation}
 The loss scaling factor $\lambda = \exp(-H/\tau)$ (where temperature $\tau=1.0$) is applied to the policy gradient. High entropy (random, diverse arithmetic errors) leads to smaller updates, while low entropy (concentrated, systematic logical errors) leads to larger updates.
 
-\subsection{Hardware-Aware Static Tensor Shaping}
-To maximize GPU throughput on NVIDIA H100 and prevent memory fragmentation caused by dynamic sequence lengths, we avoid all dynamic padding. Furthermore, taking inspiration from the DIVA-GRPO variance reduction theorem, we construct a \textbf{Static Balanced Batch} of size $S=16$. We draw $S/2$ samples from the Correct Pool and $S/2$ from $C_{top}$. \textbf{Sampling with Replacement} is used to guarantee the tensor shape is entirely constant at every step. This static configuration is hyper-optimized for maximizing DeepSpeed ZeRO-3 performance.
+
