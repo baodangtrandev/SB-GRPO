@@ -553,32 +553,50 @@ def generate_charts(
 
     artifacts_dir.mkdir(parents=True, exist_ok=True)
     output_paths: list[Path] = []
+    
+    # Premium styling
+    plt.style.use('ggplot')
+    colors = ['#4C72B0', '#DD8452', '#55A868', '#C44E52', '#8172B3', '#937860', '#DA8BC3', '#8C8C8C', '#CCB974', '#64B5CD']
 
     # Chart 1: grouped by dataset.
-    fig, ax = plt.subplots(figsize=(max(10, len(datasets) * 1.4), 6))
+    fig, ax = plt.subplots(figsize=(max(10, len(datasets) * 1.5), 6))
     x_positions = list(range(len(datasets)))
     bar_width = 0.8 / max(len(runs), 1)
 
     for idx, run_id in enumerate(runs):
         values = [by_dataset_run[dataset].get(run_id, 0.0) for dataset in datasets]
         offsets = [x + (idx - (len(runs) - 1) / 2.0) * bar_width for x in x_positions]
-        ax.bar(offsets, values, width=bar_width, label=run_id)
+        color = colors[idx % len(colors)]
+        
+        bars = ax.bar(offsets, values, width=bar_width, label=run_id, color=color, alpha=0.9, edgecolor='black', linewidth=0.5)
+        
+        # Add data labels
+        for bar, val in zip(bars, values):
+            if val > 0:
+                ax.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 0.01 * max(max(values), 1),
+                        f'{val:.2f}', ha='center', va='bottom', fontsize=9, fontweight='bold', color='#333333')
 
-    ax.set_title(f"Compare Metrics by Dataset ({chosen_metric})")
-    ax.set_xlabel("Dataset")
-    ax.set_ylabel(chosen_metric)
+    ax.set_title(f"Compare Metrics by Dataset ({chosen_metric})", fontsize=14, fontweight='bold', pad=15)
+    ax.set_xlabel("Dataset", fontsize=12, fontweight='bold')
+    ax.set_ylabel(chosen_metric, fontsize=12, fontweight='bold')
     ax.set_xticks(x_positions)
-    ax.set_xticklabels(datasets, rotation=35, ha="right")
-    ax.grid(axis="y", alpha=0.25)
-    ax.legend(loc="best")
+    ax.set_xticklabels(datasets, rotation=25, ha="right", fontsize=11)
+    
+    # Remove top and right spines for cleaner look
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+    
+    ax.legend(loc="upper left", bbox_to_anchor=(1, 1), frameon=True, shadow=True, fancybox=True)
     fig.tight_layout()
 
-    dataset_chart_path = (
-        artifacts_dir / f"chart_by_dataset_{chosen_metric.replace('/', '_')}.png"
-    )
-    fig.savefig(dataset_chart_path, dpi=180)
+    dataset_chart_png = artifacts_dir / f"chart_by_dataset_{chosen_metric.replace('/', '_')}.png"
+    dataset_chart_pdf = artifacts_dir / f"chart_by_dataset_{chosen_metric.replace('/', '_')}.pdf"
+    
+    fig.savefig(dataset_chart_png, dpi=300, bbox_inches='tight')
+    fig.savefig(dataset_chart_pdf, bbox_inches='tight')  # PDF for crisp LaTeX integration
     plt.close(fig)
-    output_paths.append(dataset_chart_path)
+    
+    output_paths.extend([dataset_chart_png, dataset_chart_pdf])
 
     # Chart 2: overall mean by run.
     mean_by_run: dict[str, float] = {}
@@ -590,25 +608,36 @@ def generate_charts(
         ]
         mean_by_run[run_id] = (sum(values) / len(values)) if values else 0.0
 
-    fig, ax = plt.subplots(figsize=(max(8, len(runs) * 1.0), 5))
+    fig, ax = plt.subplots(figsize=(max(8, len(runs) * 1.2), 5))
     run_positions = list(range(len(runs)))
     run_values = [mean_by_run[run_id] for run_id in runs]
 
-    ax.bar(run_positions, run_values, width=0.6)
-    ax.set_title(f"Overall Mean Score ({chosen_metric})")
-    ax.set_xlabel("Run")
-    ax.set_ylabel(chosen_metric)
+    bars = ax.bar(run_positions, run_values, width=0.6, color=colors[:len(runs)], alpha=0.9, edgecolor='black', linewidth=0.5)
+    
+    for bar, val in zip(bars, run_values):
+        if val > 0:
+            ax.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 0.01 * max(max(run_values), 1),
+                    f'{val:.2f}', ha='center', va='bottom', fontsize=10, fontweight='bold', color='#333333')
+
+    ax.set_title(f"Overall Mean Score ({chosen_metric})", fontsize=14, fontweight='bold', pad=15)
+    ax.set_xlabel("Run", fontsize=12, fontweight='bold')
+    ax.set_ylabel(chosen_metric, fontsize=12, fontweight='bold')
     ax.set_xticks(run_positions)
-    ax.set_xticklabels(runs, rotation=30, ha="right")
-    ax.grid(axis="y", alpha=0.25)
+    ax.set_xticklabels(runs, rotation=20, ha="right", fontsize=11)
+    
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+    
     fig.tight_layout()
 
-    overall_chart_path = (
-        artifacts_dir / f"chart_overall_{chosen_metric.replace('/', '_')}.png"
-    )
-    fig.savefig(overall_chart_path, dpi=180)
+    overall_chart_png = artifacts_dir / f"chart_overall_{chosen_metric.replace('/', '_')}.png"
+    overall_chart_pdf = artifacts_dir / f"chart_overall_{chosen_metric.replace('/', '_')}.pdf"
+    
+    fig.savefig(overall_chart_png, dpi=300, bbox_inches='tight')
+    fig.savefig(overall_chart_pdf, bbox_inches='tight')
     plt.close(fig)
-    output_paths.append(overall_chart_path)
+    
+    output_paths.extend([overall_chart_png, overall_chart_pdf])
 
     return output_paths
 
