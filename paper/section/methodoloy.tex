@@ -20,7 +20,7 @@ Note that $\Gamma \in [0, 1]$, reaching $0$ at $R=0$ (all wrong) or $R=1$ (all c
 \begin{equation}
 A_i = \Gamma \cdot A_{\text{std}, i} + (1-\Gamma) \cdot A_{\text{ngrpo}, i}
 \end{equation}
-where $A_{\text{ngrpo}}$ uses a virtual reward $r_{\text{virtual}} = 1$ to inject a negative signal even when all $r_i=0$. Injecting this virtual reward increases the mean $\mu$, which in turn pushes the $A_{\text{std},i}=(r_i-\mu)/\sigma$ of incorrect samples into explicitly negative values rather than leaving them stuck at 0. The standard advantage is computed as $A_{\text{std}, i} = (r_i - \mu) / \sigma$, where $\mu$ and $\sigma$ are the mean and standard deviation of rewards within the group. When variance approaches zero, $A_{\text{std}}$ approaches zero, making $A_{\text{ngrpo}}$ critical for continuous training.
+where $A_{\text{ngrpo}}$ uses a virtual reward $r_{\text{virtual}} = 1$ to inject a negative signal even when all $r_i=0$. Injecting this virtual reward increases the mean $\mu$, which in turn pushes the $A_{\text{std},i}=(r_i-\mu)/\sigma$ of incorrect samples into explicitly negative values rather than leaving them stuck at 0. The standard advantage is computed as $A_{\text{std}, i} = (r_i - \mu) / \sigma$, where $\mu$ and $\sigma$ are the mean and standard deviation of rewards within the group. When variance approaches zero, $A_{\text{std}}$ approaches zero, making $A_{\text{ngrpo}}$ critical for continuous training. Conversely, when $R=1$ (all correct), injecting $r_{\text{virtual}}=1$ maintains a zero advantage, correctly signaling that no policy update is required for an already mastered prompt.
 
 \begin{algorithm}
 \caption{SB-GRPO Training Step}
@@ -36,14 +36,14 @@ where $A_{\text{ngrpo}}$ uses a virtual reward $r_{\text{virtual}} = 1$ to injec
     \STATE $\lambda \gets \exp(-\text{Entropy}(C)/\tau)$
     \STATE $B \gets$ Sample $S/2$ from $P_{correct}$ and $S/2$ from $C_{top}$ (with replacement)
 \ELSE
-    \STATE $\lambda \gets 1.0$, $B \gets$ Sample $S$ uniformly from $O$
+    \STATE $\lambda \gets 1.0$, $B \gets$ Sample $S$ uniformly from $O$ (with replacement)
     \STATE Use NGRPO Virtual Advantage $A_{ngrpo}$
 \ENDIF
 \STATE \textbf{Training Phase:}
 \STATE Flush vLLM cache $\to$ Init PyTorch Trainer
 \STATE $\rho \gets \frac{\pi_\theta}{\pi_{old}}$
 \STATE $\mathcal{L}_{surr} \gets \min\left(\rho A, \text{clip}\left(\rho, 1-\epsilon, 1+\epsilon\right)A\right)$
-\STATE $\mathcal{L}_{GRPO} \gets \frac{1}{|B|} \sum \left( \lambda \mathcal{L}_{surr} - \beta \mathbb{D}_{KL} \right)$
+\STATE $\mathcal{L}_{GRPO} \gets \frac{1}{|B|} \sum \left( -\lambda \mathcal{L}_{surr} + \beta \mathbb{D}_{KL} \right)$
 \STATE Backward and Optimizer Step
 \end{algorithmic}
 \end{algorithm}
