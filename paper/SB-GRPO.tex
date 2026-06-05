@@ -12,6 +12,9 @@
 \usepackage{marvosym}
 
 
+\usepackage{orcidlink}
+
+\raggedbottom
 \usepackage[
     colorlinks=true, % Bật chế độ tô màu chữ thay vì đóng khung
     citecolor=blue,  % Màu cho các trích dẫn (ví dụ: [1])
@@ -19,15 +22,14 @@
     urlcolor=blue    % Màu cho các đường link website
 ]{hyperref}
 
-\raggedbottom
 \begin{document}
 \title{SB-GRPO: Semantic-Balanced GRPO \\ for Enhanced LLM Reasoning}
 
 % \author{Bang Dinh Nguyen\inst{1}\thanks{These authors contributed equally to this work} \and Bao Dang Tran\inst{1}\protect\footnotemark[1]\and Minh Quoc Nguyen\inst{2}\thanks{Corresponding author}}
 \author{
-    Bang Dinh Nguyen\inst{1, \dagger} \and 
-    Bao Dang Tran\inst{1, \dagger} \and 
-    Minh Quoc Nguyen\inst{1}\textsuperscript{[\Letter]}
+    Bang Dinh Nguyen\inst{1, \dagger}\orcidlink{0009-0007-3969-1768} \and 
+    Bao Dang Tran\inst{1, \dagger}\orcidlink{0009-0004-0894-7212} \and 
+    Minh Quoc Nguyen\inst{1}\textsuperscript{[\Letter]}\orcidlink{0009-0006-6070-1492}
 }
 \authorrunning{B. D. Nguyen et al.}
 \institute{
@@ -46,7 +48,7 @@ Linh Trung Ward, Thu Duc City, Ho Chi Minh City, Vietnam\\
 
 % --- Chú thích Tác giả liên hệ (Lá thư là văn bản nên PHẢI BỎ dấu $) ---
 \begingroup
-\def\thefootnote{\Letter} % <--- ĐÃ SỬA: Bỏ dấu $ ở đây
+\def\thefootnote{[\Letter]} % <--- ĐÃ SỬA: Bỏ dấu $ ở đây
 \footnotetext{: Corresponding author.} % Thường hội nghị dùng số ít "Corresponding author" nếu chỉ có 1 người
 \endgroup
 

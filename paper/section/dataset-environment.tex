@@ -19,8 +19,7 @@ For evaluation, we employ rigorous benchmarks to test generalization and advance
     \item \textbf{GPQA Diamond:} A highly challenging PhD-level benchmark containing 198 extremely difficult science questions.
     \item \textbf{GSM8K:} Evaluated on the standard test split (1,319 questions) to ensure foundational reasoning arithmetic is maintained without correction bias.
 \end{itemize}
-\clearpage
-
+% \clearpage
 
 \subsection{Experimental Setup}
 All experiments, including the training of our SB-GRPO models and all baseline comparisons (Vanilla GRPO, M-GRPO), are conducted under a unified, strictly controlled environment to ensure fair comparisons. We adopt \texttt{Qwen/}\allowbreak\texttt{Qwen2.5-7B-Instruct} as the foundational base model for all configurations. Due to memory constraints when concurrently running a 7B model and a generation engine, we apply 4-bit QLoRA (\texttt{load\_in\_4bit=True}, \texttt{use\_peft=True}) alongside DeepSpeed ZeRO-3 and Flash Attention 2 to optimize memory efficiency and computation speed. All training runs are executed on a single high-performance Linux server equipped with one NVIDIA H100 GPU (80GB VRAM). We train the models for 1 epoch with a learning rate of $1.0 \times 10^{-5}$. To maintain consistent memory usage, the maximum prompt length is constrained to 2048 tokens, and the completion length is capped at 1024 tokens. For each prompt, the model generates $N=8$ independent completions to construct the reasoning pool.

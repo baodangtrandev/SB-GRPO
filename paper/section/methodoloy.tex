@@ -3,7 +3,7 @@ This section details the SB-GRPO architecture (Figure \ref{fig:pipeline}). To re
 
 \begin{figure*}
     \centering
-    \includegraphics[width=\textwidth]{sb-grpo-diagramv2.png}
+    \includegraphics[width=\textwidth]{SB-GRPO-pipelinev3.pdf}
     \caption{The complete system architecture of SB-GRPO. The Heuristic Confidence Gate ($\Gamma$) dynamically routes uniform batches to the NGRPO module (Path A) to prevent advantage vanishing. For mixed batches (Path B), the framework applies Multi-Layer Reflection and Semantic Error Profiling (SEP) to extract the Top Error Cluster ($C_{top}$), forming a Static Balanced Batch optimized by an Entropy-Aware Loss Scaling factor ($\lambda$).}
     \label{fig:pipeline}
 \end{figure*}
