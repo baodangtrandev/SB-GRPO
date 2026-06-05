@@ -1,82 +1,76 @@
 \section{Experimental Results}
 
 \subsection{Performance Evaluation}
-All models were evaluated using the \texttt{lighteval} framework on the exact same hardware configuration to ensure fairness. Table \ref{tab:main} compares SB-GRPO with vanilla GRPO (which lacks reflection entirely) and M-GRPO (which utilizes reflection but samples revisions uniformly without semantic clustering).
+All models were evaluated using the \texttt{lighteval} framework on the exact same hardware configuration to ensure fairness. Table \ref{tab:main} compares SB-GRPO with vanilla GRPO (which lacks reflection entirely) and M-GRPO \cite{ding2025multilayergrpoenhancingreasoning}. M-GRPO is chosen as the primary baseline because it represents the state-of-the-art in multi-layer reinforcement learning for self-correction. By utilizing the same two-layer reflection structure but sampling revisions uniformly without semantic clustering or balancing, M-GRPO serves as a direct control group (ablation). This allows us to isolate the performance gains driven specifically by our semantic profiling and balanced batching mechanisms, minimizing architectural confounding variables.
 
 \begin{table}[ht]
 \centering
-\caption{Pass@1 Accuracy (\%) on Advanced Reasoning Benchmarks (1 Sample).}
+\caption{Pass@1 Accuracy (\%) and absolute performance gains ($\Delta$) on Advanced Reasoning Benchmarks (1 Sample). $\Delta_G$ and $\Delta_M$ denote the absolute improvements of SB-GRPO over Vanilla GRPO and M-GRPO, respectively.}
 \label{tab:main}
-\begin{tabular}{lccc}
+\small
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lccccc@{}}
 \toprule
-Dataset & Vanilla GRPO & M-GRPO & \textbf{SB-GRPO} \\
+& \multicolumn{3}{c}{Accuracy (\%)} & \multicolumn{2}{c}{Absolute Gains} \\
+\cmidrule(lr){2-4} \cmidrule(lr){5-6}
+Dataset & Vanilla & M-GRPO & \textbf{SB-GRPO} & $\Delta_G$ (\%) & $\Delta_M$ (\%) \\
 \midrule
-MATH-500      & 48.40 & 72.60 & \textbf{74.80} \\
-AIME 2024     & 3.33  & 6.67  & \textbf{10.00} \\
-AIME 2025     & 3.33  & \textbf{6.67}  & \textbf{6.67}  \\
-GPQA Diamond  & 30.30 & 31.82 & \textbf{32.83} \\
-GSM8K         & 56.33 & \textbf{70.51} & 69.22 \\
+MATH-500      & 48.40 & 72.60 & \textbf{74.80} & \textbf{+26.40} & \textbf{+2.20} \\
+AIME 2024     & 3.33  & 6.67  & \textbf{10.00} & \textbf{+6.67}  & \textbf{+3.33} \\
+AIME 2025     & 3.33  & \textbf{6.67}  & \textbf{6.67}  & \textbf{+3.34}  & 0.00 \\
+GPQA Diamond  & 30.30 & 31.82 & \textbf{32.83} & \textbf{+2.53}  & \textbf{+1.01} \\
+GSM8K         & 56.33 & \textbf{70.51} & 69.22 & \textbf{+12.89} & -1.29 \\
 \bottomrule
-\end{tabular}
+\end{tabular*}
 \end{table}
 
 \begin{table}[ht]
 \centering
-\caption{Pass@1 Accuracy (\%) on Advanced Reasoning Benchmarks averaged over 4 independent evaluation runs.}
+\caption{Pass@1 Accuracy (\%) and absolute performance gains ($\Delta$) on advanced reasoning benchmarks (averaged over 4 independent evaluation runs). $\Delta_G$ and $\Delta_M$ denote the absolute improvements of SB-GRPO over Vanilla GRPO and M-GRPO, respectively.}
 \label{tab:pass4}
-\begin{tabular}{lccc}
+\small
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lccccc@{}}
 \toprule
-Dataset & Vanilla GRPO & M-GRPO & \textbf{SB-GRPO} \\
+& \multicolumn{3}{c}{Accuracy (\%)} & \multicolumn{2}{c}{Absolute Gains} \\
+\cmidrule(lr){2-4} \cmidrule(lr){5-6}
+Dataset & Vanilla & M-GRPO & \textbf{SB-GRPO} & $\Delta_G$ (\%) & $\Delta_M$ (\%) \\
 \midrule
-MATH-500      & 47.60 & 72.30 & \textbf{75.65} \\
-AIME 2024     & 1.67  & 10.83 & \textbf{12.50} \\
-AIME 2025     & 0.83  & 6.67  & \textbf{8.33}  \\
-GPQA Diamond  & 28.91 & 29.42 & \textbf{33.08} \\
+MATH-500      & 47.60 & 72.30 & \textbf{75.65} & \textbf{+28.05} & \textbf{+3.35} \\
+AIME 2024     & 1.67  & 10.83 & \textbf{12.50} & \textbf{+10.83} & \textbf{+1.67} \\
+AIME 2025     & 0.83  & 6.67  & \textbf{8.33}  & \textbf{+7.50}  & \textbf{+1.66} \\
+GPQA Diamond  & 28.91 & 29.42 & \textbf{33.08} & \textbf{+4.17}  & \textbf{+3.66} \\
 \bottomrule
-\end{tabular}
+\end{tabular*}
 \end{table}
 
 \begin{table}[ht]
 \centering
-\caption{Absolute Performance Gains ($\Delta$) of SB-GRPO over Baselines (based on 4-sample evaluation).}
-\label{tab:delta}
-\begin{tabular}{lcc}
-\toprule
-Dataset & vs Vanilla GRPO & vs M-GRPO \\
-\midrule
-MATH-500      & \textbf{+28.05\%} & \textbf{+3.35\%} \\
-AIME 2024     & \textbf{+10.83\%} & \textbf{+1.67\%} \\
-AIME 2025     & \textbf{+7.50\%}  & \textbf{+1.66\%} \\
-GPQA Diamond  & \textbf{+4.17\%}  & \textbf{+3.66\%} \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-\begin{table}[ht]
-\centering
-\caption{MATH Sub-category Analysis: Comparison of Vanilla GRPO, M-GRPO, and SB-GRPO.}
+\caption{MATH Sub-category Analysis: Comparison of Vanilla GRPO, M-GRPO, and SB-GRPO. $\Delta_G$ and $\Delta_M$ denote the absolute improvements of SB-GRPO over Vanilla GRPO and M-GRPO, respectively.}
 \label{tab:math}
-\begin{tabular}{lccc}
+\small
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lccccc@{}}
 \toprule
-Category & Vanilla (\%) & M-GRPO (\%) & \textbf{SB (\%)} \\
+& \multicolumn{3}{c}{Accuracy (\%)} & \multicolumn{2}{c}{Absolute Gains} \\
+\cmidrule(lr){2-4} \cmidrule(lr){5-6}
+Category & Vanilla & M-GRPO & \textbf{SB-GRPO} & $\Delta_G$ (\%) & $\Delta_M$ (\%) \\
 \midrule
-Algebra                     & 62.01 & \textbf{89.39} & 89.13 \\
-Counting \& Probability     & 43.25 & 64.56 & \textbf{67.09} \\
-Geometry                    & 32.99 & 56.99 & \textbf{57.62} \\
-Intermediate Algebra        & 25.14 & 49.83 & \textbf{54.71} \\
-Number Theory               & 42.22 & 70.56 & \textbf{73.52} \\
-Prealgebra                  & 65.33 & 81.63 & \textbf{82.43} \\
-Precalculus                 & 24.54 & 51.28 & \textbf{56.96} \\
+Algebra                     & 62.01 & \textbf{89.39} & 89.13 & \textbf{+27.12} & -0.26 \\
+Counting \& Probability     & 43.25 & 64.56 & \textbf{67.09} & \textbf{+23.84} & \textbf{+2.53} \\
+Geometry                    & 32.99 & 56.99 & \textbf{57.62} & \textbf{+24.63} & \textbf{+0.63} \\
+Intermediate Algebra        & 25.14 & 49.83 & \textbf{54.71} & \textbf{+29.57} & \textbf{+4.88} \\
+Number Theory               & 42.22 & 70.56 & \textbf{73.52} & \textbf{+31.30} & \textbf{+2.96} \\
+Prealgebra                  & 65.33 & 81.63 & \textbf{82.43} & \textbf{+17.10} & \textbf{+0.80} \\
+Precalculus                 & 24.54 & 51.28 & \textbf{56.96} & \textbf{+32.42} & \textbf{+5.68} \\
 \midrule
-\textbf{Overall}            & 42.21 & 66.32 & \textbf{68.78} \\
+\textbf{Overall}            & 42.21 & 66.32 & \textbf{68.78} & \textbf{+26.57} & \textbf{+2.46} \\
 \bottomrule
-\end{tabular}
+\end{tabular*}
 \end{table}
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.85\textwidth]{math_delta_chart_v4.png}
-\caption{Relative performance gain of SB-GRPO compared to the M-GRPO baseline. The significant improvements in \textit{Intermediate Algebra} (+4.88\%) and \textit{Precalculus} (+5.68\%) demonstrate the effectiveness of semantic balancing in complex reasoning, while the stability in \textit{Algebra} confirms that the Heuristic Confidence Gate prevents correction bias in simpler tasks.}
+\includegraphics[width=0.85\textwidth]{math_delta_chart_mgrpo.png}\\[1em]
+\includegraphics[width=0.85\textwidth]{math_delta_chart_vanilla.png}
+\caption{Absolute performance gains of SB-GRPO on MATH sub-categories. \textbf{Top:} Compared to M-GRPO, where significant improvements in \textit{Intermediate Algebra} (+4.88\%) and \textit{Precalculus} (+5.68\%) demonstrate the effectiveness of semantic balancing in complex reasoning. \textbf{Bottom:} Compared to Vanilla GRPO, highlighting the massive broad-spectrum improvements achieved by the reflection mechanism.}
 \label{fig:delta}
 \end{figure}
 
