@@ -2,6 +2,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import os
 
+# cd docs && python generate_math_delta_chart.py
+
 categories = [
     "Algebra", "Counting & Probability", "Geometry",
     "Intermediate Algebra", "Number Theory", "Prealgebra", "Precalculus"
@@ -19,7 +21,7 @@ def generate_chart(base_name, base_data, title, output_png):
     sorted_deltas = [x[1] for x in sorted_pairs]
     
     plt.style.use("ggplot")
-    fig, ax = plt.subplots(figsize=(12, 5.5))
+    fig, ax = plt.subplots(figsize=(12, 6.0))
     ax.set_facecolor("white")
     fig.patch.set_facecolor("white")
     
@@ -29,42 +31,43 @@ def generate_chart(base_name, base_data, title, output_png):
     
     y_pos = np.arange(len(sorted_cats))
     bars = ax.barh(
-        y_pos, sorted_deltas, color=colors, height=0.8, alpha=0.9,
+        y_pos, sorted_deltas, color=colors, height=0.75, alpha=0.9,
         edgecolor="#222222", linewidth=0.8
     )
     
+    max_x = max(sorted_deltas) * 1.2
+    min_x = -0.15 * max_x
+    
     for i, (bar, delta) in enumerate(zip(bars, sorted_deltas)):
         if delta >= 0:
-            offset = max(1.0, max(sorted_deltas)*0.05) * 0.5
+            offset = max_x * 0.015
             ha = "left"
             x_pos = delta + offset
         else:
-            offset = max(1.0, max(sorted_deltas)*0.05) * 0.5
-            ha = "left"
-            x_pos = offset  # Place text on the right side of the y-axis for negative values
+            offset = max_x * 0.015
+            ha = "right"
+            x_pos = delta - offset
             
         color = pos_color if delta > 0 else neg_color
         sign = "+" if delta > 0 else ""
         ax.text(
             x_pos, bar.get_y() + bar.get_height() / 2,
             f"{sign}{delta:.2f}%", va="center", ha=ha,
-            fontsize=11, fontweight="bold", color=color,
+            fontsize=13, fontweight="bold", color=color,
         )
         
     ax.axvline(0, color="black", linewidth=1.2, alpha=0.8)
     
     ax.set_yticks(y_pos)
-    ax.set_yticklabels(sorted_cats, fontsize=12, fontweight="bold")
-    ax.set_xlabel("Absolute Performance Gain (%)", fontsize=12, fontweight="bold", labelpad=10)
-    ax.set_title(title, fontsize=14, fontweight="bold", pad=20)
+    ax.set_yticklabels(sorted_cats, fontsize=14, fontweight="bold")
+    ax.set_xlabel("Absolute Performance Gain (%)", fontsize=14, fontweight="bold", labelpad=10)
+    ax.set_title(title, fontsize=16, fontweight="bold", pad=20)
     
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
     ax.spines["left"].set_visible(False)
     ax.spines["bottom"].set_color("#333333")
     
-    min_x = min(0, min(sorted_deltas) * 1.2)
-    max_x = max(sorted_deltas) * 1.2
     ax.set_xlim(min_x, max_x)
     
     ax.grid(axis="x", color="#e0e0e0", linestyle="--", alpha=0.7)
@@ -76,5 +79,5 @@ def generate_chart(base_name, base_data, title, output_png):
     print(f"Generated: {output_png}")
 
 output_dir = r"d:\Projects\M-SB-GRPO\paper"
-generate_chart("M-GRPO", m_grpo, "Performance Gain of SB-GRPO vs M-GRPO on MATH Sub-categories", os.path.join(output_dir, "math_delta_chart_mgrpo.png"))
-generate_chart("Vanilla GRPO", vanilla, "Performance Gain of SB-GRPO vs Vanilla GRPO on MATH Sub-categories", os.path.join(output_dir, "math_delta_chart_vanilla.png"))
+generate_chart("M-GRPO", m_grpo, "Performance Gain of SB-GRPO over M-GRPO on MATH Sub-categories", os.path.join(output_dir, "math_delta_chart_mgrpo.png"))
+generate_chart("Vanilla GRPO", vanilla, "Performance Gain of SB-GRPO over Vanilla GRPO on MATH Sub-categories", os.path.join(output_dir, "math_delta_chart_vanilla.png"))
