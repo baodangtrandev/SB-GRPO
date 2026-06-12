@@ -8,17 +8,22 @@ All models were evaluated using the \texttt{lighteval} framework on the exact sa
 \caption{Pass@1 Accuracy (\%) and absolute performance gains ($\Delta$) on Advanced Reasoning Benchmarks (1 Sample). $\Delta_{S-V}$ and $\Delta_{S-M}$ denote the absolute improvements of SB-GRPO over Vanilla GRPO and M-GRPO, respectively.}
 \label{tab:main}
 \small
-\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lccccc@{}}
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}l
+  S[table-format=2.2]
+  S[table-format=2.2, detect-weight]
+  S[table-format=2.2, detect-weight]
+  S[table-format=+2.2, detect-weight]
+  S[table-format=+2.2, detect-weight]@{}}
 \toprule
 & \multicolumn{3}{c}{Accuracy (\%)} & \multicolumn{2}{c}{Absolute Gains (\%)} \\
 \cmidrule(lr){2-4} \cmidrule(lr){5-6}
-Dataset & Vanilla & M-GRPO & \textbf{SB-GRPO} & $\Delta_{S-V}$ & $\Delta_{S-M}$ \\
+{Dataset} & {Vanilla} & {M-GRPO} & {\textbf{SB-GRPO}} & {$\Delta_{S-V}$} & {$\Delta_{S-M}$} \\
 \midrule
-MATH-500      & 48.40 & 72.60 & \textbf{74.80} & \textbf{+26.40} & \textbf{+2.20} \\
-AIME 2024     & 3.33  & 6.67  & \textbf{10.00} & \textbf{+6.67}  & \textbf{+3.33} \\
-AIME 2025     & 3.33  & \textbf{6.67}  & \textbf{6.67}  & \textbf{+3.34}  & 0 \\
-GPQA Diamond  & 30.30 & 31.82 & \textbf{32.83} & \textbf{+2.53}  & \textbf{+1.01} \\
-GSM8K         & 56.33 & \textbf{70.51} & 69.22 & \textbf{+12.89} & -1.29 \\
+MATH-500      & 48.40 & 72.60 & \bfseries 74.80 & \bfseries +26.40 & \bfseries +2.20 \\
+AIME 2024     & 3.33  & 6.67  & \bfseries 10.00 & \bfseries +6.67  & \bfseries +3.33 \\
+AIME 2025     & 3.33  & \bfseries 6.67  & \bfseries 6.67  & \bfseries +3.34  & 0 \\
+GPQA Diamond  & 30.30 & 31.82 & \bfseries 32.83 & \bfseries +2.53  & \bfseries +1.01 \\
+GSM8K         & 56.33 & \bfseries 70.51 & 69.22 & \bfseries +12.89 & -1.29 \\
 \bottomrule
 \end{tabular*}
 \end{table}
@@ -28,16 +33,21 @@ GSM8K         & 56.33 & \textbf{70.51} & 69.22 & \textbf{+12.89} & -1.29 \\
 \caption{Pass@1 Accuracy (\%) and absolute performance gains ($\Delta$) on advanced reasoning benchmarks (averaged over 4 independent evaluation runs). $\Delta_{S-V}$ and $\Delta_{S-M}$ denote the absolute improvements of SB-GRPO over Vanilla GRPO and M-GRPO, respectively.}
 \label{tab:pass4}
 \small
-\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lccccc@{}}
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}l
+  S[table-format=2.2]
+  S[table-format=2.2]
+  S[table-format=2.2, detect-weight]
+  S[table-format=+2.2, detect-weight]
+  S[table-format=+2.2, detect-weight]@{}}
 \toprule
 & \multicolumn{3}{c}{Accuracy (\%)} & \multicolumn{2}{c}{Absolute Gains (\%)} \\
 \cmidrule(lr){2-4} \cmidrule(lr){5-6}
-Dataset & Vanilla & M-GRPO & \textbf{SB-GRPO} & $\Delta_{S-V}$ & $\Delta_{S-M}$ \\
+{Dataset} & {Vanilla} & {M-GRPO} & {\textbf{SB-GRPO}} & {$\Delta_{S-V}$} & {$\Delta_{S-M}$} \\
 \midrule
-MATH-500      & 47.60 & 72.30 & \textbf{75.65} & \textbf{+28.05} & \textbf{+3.35} \\
-AIME 2024     & 1.67  & 10.83 & \textbf{12.50} & \textbf{+10.83} & \textbf{+1.67} \\
-AIME 2025     & 0.83  & 6.67  & \textbf{8.33}  & \textbf{+7.50}  & \textbf{+1.66} \\
-GPQA Diamond  & 28.91 & 29.42 & \textbf{33.08} & \textbf{+4.17}  & \textbf{+3.66} \\
+MATH-500      & 47.60 & 72.30 & \bfseries 75.65 & \bfseries +28.05 & \bfseries +3.35 \\
+AIME 2024     & 1.67  & 10.83 & \bfseries 12.50 & \bfseries +10.83 & \bfseries +1.67 \\
+AIME 2025     & 0.83  & 6.67  & \bfseries 8.33  & \bfseries +7.50  & \bfseries +1.66 \\
+GPQA Diamond  & 28.91 & 29.42 & \bfseries 33.08 & \bfseries +4.17  & \bfseries +3.66 \\
 \bottomrule
 \end{tabular*}
 \end{table}
@@ -47,21 +57,26 @@ GPQA Diamond  & 28.91 & 29.42 & \textbf{33.08} & \textbf{+4.17}  & \textbf{+3.66
 \caption{MATH Sub-category Analysis: Comparison of Vanilla GRPO, M-GRPO, and SB-GRPO. $\Delta_{S-V}$ and $\Delta_{S-M}$ denote the absolute improvements of SB-GRPO over Vanilla GRPO and M-GRPO, respectively.}
 \label{tab:math}
 \small
-\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lccccc@{}}
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}l
+  S[table-format=2.2]
+  S[table-format=2.2, detect-weight]
+  S[table-format=2.2, detect-weight]
+  S[table-format=+2.2, detect-weight]
+  S[table-format=+2.2, detect-weight]@{}}
 \toprule
 & \multicolumn{3}{c}{Accuracy (\%)} & \multicolumn{2}{c}{Absolute Gains (\%)} \\
 \cmidrule(lr){2-4} \cmidrule(lr){5-6}
-Category & Vanilla & M-GRPO & \textbf{SB-GRPO} & $\Delta_{S-V}$ & $\Delta_{S-M}$ \\
+{Category} & {Vanilla} & {M-GRPO} & {\textbf{SB-GRPO}} & {$\Delta_{S-V}$} & {$\Delta_{S-M}$} \\
 \midrule
-Algebra                     & 62.01 & \textbf{89.39} & 89.13 & \textbf{+27.12} & -0.26 \\
-Counting \& Probability     & 43.25 & 64.56 & \textbf{67.09} & \textbf{+23.84} & \textbf{+2.53} \\
-Geometry                    & 32.99 & 56.99 & \textbf{57.62} & \textbf{+24.63} & \textbf{+0.63} \\
-Intermediate Algebra        & 25.14 & 49.83 & \textbf{54.71} & \textbf{+29.57} & \textbf{+4.88} \\
-Number Theory               & 42.22 & 70.56 & \textbf{73.52} & \textbf{+31.30} & \textbf{+2.96} \\
-Prealgebra                  & 65.33 & 81.63 & \textbf{82.43} & \textbf{+17.10} & \textbf{+0.80} \\
-Precalculus                 & 24.54 & 51.28 & \textbf{56.96} & \textbf{+32.42} & \textbf{+5.68} \\
+Algebra                     & 62.01 & \bfseries 89.39 & 89.13 & \bfseries +27.12 & -0.26 \\
+{Counting \& Probability}   & 43.25 & 64.56 & \bfseries 67.09 & \bfseries +23.84 & \bfseries +2.53 \\
+Geometry                    & 32.99 & 56.99 & \bfseries 57.62 & \bfseries +24.63 & \bfseries +0.63 \\
+{Intermediate Algebra}      & 25.14 & 49.83 & \bfseries 54.71 & \bfseries +29.57 & \bfseries +4.88 \\
+{Number Theory}             & 42.22 & 70.56 & \bfseries 73.52 & \bfseries +31.30 & \bfseries +2.96 \\
+Prealgebra                  & 65.33 & 81.63 & \bfseries 82.43 & \bfseries +17.10 & \bfseries +0.80 \\
+Precalculus                 & 24.54 & 51.28 & \bfseries 56.96 & \bfseries +32.42 & \bfseries +5.68 \\
 \midrule
-\textbf{Overall}            & 42.21 & 66.32 & \textbf{68.78} & \textbf{+26.57} & \textbf{+2.46} \\
+{\textbf{Overall}}          & 42.21 & 66.32 & \bfseries 68.78 & \bfseries +26.57 & \bfseries +2.46 \\
 \bottomrule
 \end{tabular*}
 \end{table}
