@@ -48,7 +48,7 @@ To substantiate the efficacy of the semantic-balanced batching paradigm, M-SB-GR
 
 ### Evaluation Results
 
-![Experimental Results: Math Delta Chart](paperv2/math_delta_chart_combined.png)
+![Experimental Results: Math Delta Chart](paper/math_delta_chart_combined.png)
 
 ---
 
